@@ -22,3 +22,5 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # 4. (Opcjonalnie) Zabezpieczamy plik, dając prawa odczytu tylko Tobie
 chmod 600 $HOME/.kube/config
+
+chmod a+rw /etc/rancher/k3s/k3s.yaml
