@@ -1,0 +1,100 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echo
+
+---
+# 3. POD BAZY DANYCH (Zapisujący korespondencję)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db-pod
+  namespace: echo
+  labels:
+    app: database
+spec:
+  containers:
+  - name: db
+    image: alpine
+    command: ["/bin/sh", "-c"]
+    # Nasłuchuje na porcie 5432 i dopisuje wszystko do pliku /tmp/chat.log
+    args: ["apk add --no-cache netcat-openbsd && touch /tmp/chat.log && nc -lk -p 5432 >> /tmp/chat.log"]
+    ports:
+    - containerPort: 5432
+
+---
+# SERWIS DLA BAZY DANYCH
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  namespace: echo
+spec:
+  selector:
+    app: database
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+
+---
+# 2. POD ECHO (Aplikacja pośrednicząca)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo-pod
+  namespace: echo
+  labels:
+    app: echo-app
+spec:
+  containers:
+  - name: echo-app
+    image: alpine
+    command: ["/bin/sh", "-c"]
+    # Pętla nasłuchująca na porcie 8080. 
+    # Odbiera wiadomość, wysyła ją do bazy danych (db-service) i jednocześnie odpowiada klientowi.
+    args: 
+    - |
+      apk add --no-cache netcat-openbsd
+      echo "Echo server started..."
+      while true; do
+        # Odbieramy wiadomość od klienta
+        MSG=$(nc -l -p 8080)
+        if [ ! -z "$MSG" ]; then
+          # Wysyłamy kopię do bazy danych w tle
+          echo "Log: $MSG" | nc db-service 5432
+          # Odpowiadamy klientowi
+          echo "ECHO: $MSG"
+        fi
+      done
+    ports:
+    - containerPort: 8080
+
+---
+# SERWIS DLA PODU ECHO
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-service
+  namespace: echo
+spec:
+  selector:
+    app: echo-app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+
+---
+# 1. POD UŻYTKOWNIKA (Klient)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-pod
+  namespace: echo
+spec:
+  containers:
+  - name: client
+    image: alpine
+    command: ["/bin/sh", "-c", "apk add --no-cache netcat-openbsd curl && sleep 3600"]
