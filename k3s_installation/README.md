@@ -24,3 +24,23 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 chmod 600 $HOME/.kube/config
 
 chmod a+rw /etc/rancher/k3s/k3s.yaml
+
+Autokompletacja
+sudo apt update
+sudo apt install -y bash-completion
+
+root@pklawit-ubuntu-arm:~# echo 'source <(kubectl completion bash)' >> ~/.bashrc
+root@pklawit-ubuntu-arm:~# echo 'alias k=kubectl' >> ~/.bashrc
+echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
+root@pklawit-ubuntu-arm:~# source ~/.bashrc
+
+root@pklawit-ubuntu-arm:~# k get namespaces 
+NAME              STATUS   AGE
+default           Active   28m
+echo              Active   23m
+kube-node-lease   Active   28m
+kube-public       Active   28m
+kube-system       Active   28m
+root@pklawit-ubuntu-arm:~# 
+
+
