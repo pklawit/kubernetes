@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-db-traffic
+  namespace: echo
+spec:
+  # Wybieramy pod bazy danych jako cel tej polityki
+  podSelector:
+    matchLabels:
+      app: database
+  # Definiujemy, że kontrolujemy ruch przychodzący (Ingress)
+  policyTypes:
+  - Ingress
+  # Pozostawiamy sekcję ingress pustą -> brak reguł zezwalających -> ruch zablokowany
+  ingress: []
+  
