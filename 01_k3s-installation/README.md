@@ -1,46 +1,54 @@
+# Kubernetes environment for testing - K3s
+
+## Virtual Machine
+VMWare Player or any other virtualization
 Install VM - for example: Ubuntu 24.04.4
 
-Install docker.io
-apt install docker.io
+1. Install docker.io:
+<pre>apt install docker.io</pre>
 
-Install curl:
-apt install curl
+1. Install curl:
+<pre>apt install curl</pre>
 
-Install K3s:
-curl -sfL https://get.k3s.io | sh -
+1. Install K3s:
+<pre>curl -sfL https://get.k3s.io | sh - </pre>
 
-Permissions - to let the non-root user to execute kubectl
+1. Permissions - to let the non-root user to execute kubectl
 
-# 1. Tworzymy ukryty katalog .kube w Twoim folderze domowym
-mkdir -p $HOME/.kube
+1. Create hidden .kube folder in your home directory
+<pre>mkdir -p $HOME/.kube</pre>
 
-# 2. Kopiujemy konfigurację K3s jako root do Twojego katalogu
-sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+1. Copy K3s config as root user to your personal folder
+<pre>sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config</pre>
 
-# 3. Zmieniamy właściciela pliku na Twojego użytkownika
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+1. Change owner of the k3s config
+<pre>sudo chown $(id -u):$(id -g) $HOME/.kube/config<pre>
 
-# 4. (Opcjonalnie) Zabezpieczamy plik, dając prawa odczytu tylko Tobie
-chmod 600 $HOME/.kube/config
+1. Protect the K3s configuration file
+<pre>chmod 600 $HOME/.kube/config</pre>
 
-chmod a+rw /etc/rancher/k3s/k3s.yaml
+1. Export KUBECONFIG variable
+<pre>export KUBECONFIG=$HOME/.kube/config</pre>
 
-Autokompletacja
-sudo apt update
+1. Testing
+<pre>kubectl get node</pre>
+
+1. (Optional) - command autocompletion
+<pre>sudo apt update
 sudo apt install -y bash-completion
-
-root@pklawit-ubuntu-arm:~# echo 'source <(kubectl completion bash)' >> ~/.bashrc
-root@pklawit-ubuntu-arm:~# echo 'alias k=kubectl' >> ~/.bashrc
+sudo echo 'source <(kubectl completion bash)' >> ~/.bashrc
+echo 'alias k=kubectl' >> ~/.bashrc
 echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
-root@pklawit-ubuntu-arm:~# source ~/.bashrc
+source ~/.bashrc</pre>
 
-root@pklawit-ubuntu-arm:~# k get namespaces 
+1. Autocompletion testing
+<pre>k get namespaces
 NAME              STATUS   AGE
 default           Active   28m
 echo              Active   23m
 kube-node-lease   Active   28m
 kube-public       Active   28m
 kube-system       Active   28m
-root@pklawit-ubuntu-arm:~# 
+root@pklawit-ubuntu-arm:~#</pre>
 
 
