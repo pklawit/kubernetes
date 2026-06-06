@@ -9,7 +9,8 @@ Network: create at least Host network, so
 
 ## Virtual Machine - install K3s and necessary tools
 1. Install docker.io:
-<pre>sudo apt install docker.io</pre>
+'''bash
+sudo apt install docker.io
 
 2. Install curl:
 <pre>sudo apt install curl</pre>
