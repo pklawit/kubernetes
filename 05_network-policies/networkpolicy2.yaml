@@ -1,7 +1,8 @@
+# This NetworkPolicy will allow incoming traffic to the database PODs only from the echo application PODs.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: deny-db-traffic
+  name: allow-db-traffic
   namespace: echo
 spec:
   podSelector:
@@ -13,7 +14,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app: echo-app # Tylko pod z tą etykietą przejdzie przez zaporę
+          app: echo-app # Allow traffic only from echo application PODs
     ports:
     - protocol: TCP
       port: 5432

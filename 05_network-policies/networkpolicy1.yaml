@@ -1,0 +1,18 @@
+# NetworkPolicy that blocks all incoming traffic to the database PODs in the 'echo' namespace.
+# This will prevent the echo application from sending logs to the database, but it will not affect the communication between clients and the echo service.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-db-traffic
+  namespace: echo
+spec:
+  # Select the database POD as target for this policy
+  podSelector:
+    matchLabels:
+      app: database
+  # We will controll the incoming traffic (ingress) to the selected PODs
+  policyTypes:
+  - Ingress
+  # We leave the ingress section empty -> no rules allowing traffic -> traffic is blocked
+  ingress: []
+

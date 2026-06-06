@@ -6,13 +6,13 @@ metadata:
   labels:
     app: echo-app
 spec:
-  # Definiujemy pożądaną liczbę działających podów
+  # Define number of working PODs for this application
   replicas: 1
-  # Selector mówi Deploymentowi, którymi podami ma zarządzać
+  # Selector says which PODs this deployment should manage
   selector:
     matchLabels:
       app: echo-app
-  # Szablon (template) opisuje, jak ma wyglądać każdy stworzony pod
+  # Template (template) describes how each created POD should look like
   template:
     metadata:
       labels:
@@ -22,7 +22,7 @@ spec:
       - name: echo-app
         image: alpine
         command: ["/bin/sh", "-c"]
-        args: 
+        args:
         - |
           apk add --no-cache netcat-openbsd
           echo "Echo server started from Deployment..."
@@ -37,8 +37,8 @@ spec:
         - containerPort: 8080
 
 ---
-# Serwis pozostaje bez zmian – dzięki etykiecie "app: echo-app" 
-# automatycznie wykryje pod stworzony przez Deployment.
+# Service for the application will remain unchanged – thanks to the label "app: echo-app"
+# it will automatically detect the pod created by the Deployment.
 apiVersion: v1
 kind: Service
 metadata:

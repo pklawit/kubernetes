@@ -1,34 +1,42 @@
-# Demo 1
+# Demo - Echo responder application and database for conversation history
 
-Krok 1: Wdrożenie konfiguracji
-Uruchom wszystkie komponenty w klastrze:
-kubectl apply -f demo.yaml
+## Deployment
+Install all the components with command:
+```bash
+kubectl apply -f deploy_all.yaml
+```
 
-Poczekaj chwilę, aż wszystkie PODy będą miały status Running:
+Wait a minute untill all PODs will have status 'Running':
+```bash
 kubectl get pods -n echo -w
+```
 
-Krok 2: Podgląd bazy danych "na żywo"
-Aby pokazać, że dane naprawdę się zapisują, otwórz drugi terminal w O'Reilly (lub uruchom komendę w tle) i "podglądaj" plik logu w podzie bazy danych:
+## Execute the excercise
+
+1. Watch 'database' logs
+In new terminal window monitor the content of database log file:
+```bash
 kubectl exec -n echo db-pod -- tail -f /tmp/chat.log
+```
+For now it will be empty
 
-(Na razie będzie tu pusto).
-Krok 3: Interakcja z poziomu PODa użytkownika (Test)
-Teraz wejdź "do środka" podu klienckiego, aby zasymulować ruch użytkownika:
+2. Send something from client POD to the Echo responder POD
+In another terminal window go inside the client POD:
+```bash
 kubectl exec -it -n echo client-pod -- /bin/sh
+```
+You are now inside the client POD. Let's sent some text message over TCP with netcat to the echo-service:
+```bash
+echo "Hi, this is message from client POD!" | nc echo-service 8080
+```
 
-Jesteś teraz wewnątrz kontenera klienta. Wyślijmy wiadomość tekstową przez TCP przy użyciu netcat bezpośrednio do serwisu echo-service:
-echo "Czesc, to wiadomosc z pierwszego podu!" | nc echo-service 8080
+Expected result:
+You should immediately see response from the Echo service PDO:
 
-Wynik w terminalu klienta:
-Powinieneś natychmiast otrzymać odpowiedź zwrotną od serwisu Echo:
-ECHO: Czesc, to wiadomosc z pierwszego podu!
+<pre>ECHO: Hi, this is message from client POD!</pre>
 
-(Uwaga: Ponieważ nasz uproszczony skrypt w echo-podzie przetwarza jedną linię tekstu i zamyka połączenie, curl wysyłający nagłówki HTTP mógłby zawiesić prostego netcata, dlatego do czystego TCP komenda nc jest w tym scenariuszu bezbłędna i niezawodna).
-Krok 4: Weryfikacja zapisu w bazie danych
-Wróć do terminala, w którym masz podgląd na pod bazy danych (db-pod). Zobaczysz, że pojawił się tam wpis:
-Log: Czesc, to wiadomosc z pierwszego podu!
+3. Verify if the conversation is stored on the database POD
+Go back to the terminal window where the DB log is printed out.
+You should see the conversation sent from client POD stored there:
+<pre>Log: Hi, this is message from client POD!</pre>
 
-Punkty do omówienia:
-	1.	Service Discovery: Pod kliencki nie musi znać adresu IP podu Echo. Używa nazwy DNS echo-service, a K8s sam wie, gdzie to przekierować.
-	2.	Komunikacja wewnątrz klastra: Pod Echo bez problemu rozmawia z db-service na innym porcie.
-	3.	Izolacja: Wszystko dzieje się wewnątrz dedykowanego namespace: echo, nie zakłócając pracy innych aplikacji w klastrze.

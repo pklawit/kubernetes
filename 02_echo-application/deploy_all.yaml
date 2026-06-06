@@ -1,11 +1,12 @@
 ---
+# First we need to create a namespace - it will keep all our resources related to 'echo' application
 apiVersion: v1
 kind: Namespace
 metadata:
   name: echo
 
 ---
-# 3. POD BAZY DANYCH (Zapisujący korespondencję)
+# This will create 'database' POD, which will listen on port 5432 and log all received messages to /tmp/chat.log.
 apiVersion: v1
 kind: Pod
 metadata:
@@ -18,13 +19,13 @@ spec:
   - name: db
     image: alpine
     command: ["/bin/sh", "-c"]
-    # Nasłuchuje na porcie 5432 i dopisuje wszystko do pliku /tmp/chat.log
+    # Netcat listening on port 5432 and appending all received messages to /tmp/chat.log
     args: ["apk add --no-cache netcat-openbsd && touch /tmp/chat.log && nc -lk -p 5432 >> /tmp/chat.log"]
     ports:
     - containerPort: 5432
 
 ---
-# SERWIS DLA BAZY DANYCH
+# Service for the database POD, which will allow other PODs to communicate with it using the name 'db-service' and port 5432.
 apiVersion: v1
 kind: Service
 metadata:
@@ -39,7 +40,7 @@ spec:
     targetPort: 5432
 
 ---
-# 2. POD ECHO (Aplikacja pośrednicząca)
+# This will create 'echo' POD, which will listen on port 8080. It will receive messages from clients, send a copy to the database service, and respond back to the client with an echo message.
 apiVersion: v1
 kind: Pod
 metadata:
@@ -52,19 +53,19 @@ spec:
   - name: echo-app
     image: alpine
     command: ["/bin/sh", "-c"]
-    # Pętla nasłuchująca na porcie 8080. 
-    # Odbiera wiadomość, wysyła ją do bazy danych (db-service) i jednocześnie odpowiada klientowi.
+    # Loop listening on port 8080.
+    # Receives a message, sends it to the database service (db-service) and simultaneously responds to the client.
     args: 
     - |
       apk add --no-cache netcat-openbsd
       echo "Echo server started..."
       while true; do
-        # Odbieramy wiadomość od klienta
+        # Receive message from client
         MSG=$(nc -l -p 8080)
         if [ ! -z "$MSG" ]; then
-          # Wysyłamy kopię do bazy danych w tle
+          # Send copy to database service in background
           echo "Log: $MSG" | nc db-service 5432
-          # Odpowiadamy klientowi
+          # Respond to client
           echo "ECHO: $MSG"
         fi
       done
@@ -72,7 +73,7 @@ spec:
     - containerPort: 8080
 
 ---
-# SERWIS DLA PODU ECHO
+# Service for the echo POD, which will allow clients to communicate with it using the name 'echo-service' and port 8080.
 apiVersion: v1
 kind: Service
 metadata:
@@ -87,7 +88,7 @@ spec:
     targetPort: 8080
 
 ---
-# 1. POD UŻYTKOWNIKA (Klient)
+# This will create 'client' POD, which will be used to send messages to the echo service and receive responses. It will have netcat and curl installed for testing purposes.
 apiVersion: v1
 kind: Pod
 metadata:
