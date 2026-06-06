@@ -9,11 +9,11 @@ Network: create at least Host network, so
 
 ## Virtual Machine - install K3s and necessary tools
 1. Install docker.io:
-'''bash
+```bash
 sudo apt install docker.io
 
 2. Install curl:
-<pre>sudo apt install curl</pre>
+```sudo apt install curl
 
 3. Install K3s:
 <pre>sudo curl -sfL https://get.k3s.io | sh - </pre>
