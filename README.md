@@ -10,6 +10,14 @@ Option 2:
 
 ## Simple 'echo' application
 
+### Test environment diagram
+
+![Echo test environment](assets/echo-test-environment.svg)
+
+This diagram shows the `echo` namespace in Kubernetes with:
+- an `echo-service` routing to 3 `echo` application pods
+- a `db-service` routing to a single database pod
+
 ## Self healing
 
 ## Scaling
