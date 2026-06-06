@@ -11,45 +11,69 @@ Network: create at least Host network, so
 1. Install docker.io:
 ```bash
 sudo apt install docker.io
+```
 
 2. Install curl:
-```sudo apt install curl
+```bash
+sudo apt install curl
+```
 
 3. Install K3s:
-<pre>sudo curl -sfL https://get.k3s.io | sh - </pre>
+```bash
+sudo curl -sfL https://get.k3s.io | sh -
+```
 
 4. Test as root user:
-<pre>kubectl get node</pre>
+```bash
+kubectl get node
+```
 
 ## Virtual Machine - prepare config for non-root user
 1. Create .kube folder in your home directory
-<pre>mkdir -p $HOME/.kube</pre>
+```bash
+mkdir -p $HOME/.kube
+```
 
 2. Copy K3s config as root user to your personal folder
-<pre>sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config</pre>
+```bash
+sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+```
 
 3. Change owner of the k3s config:
-<pre>sudo chown $(id -u):$(id -g) $HOME/.kube/config</pre>
+```bash
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
 
 4. Protect the K3s configuration file:
-<pre>chmod 600 $HOME/.kube/config</pre>
+```bash
+chmod 600 $HOME/.kube/config
+```
 
 5. Export KUBECONFIG variable:
-<pre>export KUBECONFIG=$HOME/.kube/config</pre>
+```bash
+export KUBECONFIG=$HOME/.kube/config
+```
 
 6. Testing
-<pre>kubectl get node</pre>
+```bash
+kubectl get node
+```
 
 7. (Optional) - command autocompletion
-<pre>sudo apt update
+```bash
+sudo apt update
 sudo apt install -y bash-completion
 sudo echo 'source <(kubectl completion bash)' >> ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc
 echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
 source ~/.bashrc</pre>
+```
 
 8. (Optional) Autocompletion testing
-<pre>k get namespaces
+```bash
+k get namespaces
+```
+<pre>
 NAME              STATUS   AGE
 default           Active   28m
 echo              Active   23m
@@ -62,13 +86,21 @@ kube-system       Active   28m
 This will be the typical use-case, that Kubernetes cluster is installed in a cloud environment, and you will be deploying applications/PODs to it from remote machine.
 
 1. Check the node IP address:
-<pre>kubectl get node -o wide
+```bash
+kubectl get node -o wide
+```
+<pre>
 NAME                 STATUS   ROLES           AGE    VERSION        INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
 pklawit-ubuntu-arm   Ready    control-plane   5d8h   v1.35.5+k3s1   192.168.64.6   <none>        Ubuntu 24.04.4 LTS   6.17.0-35-generic   containerd://2.2.3-k3s1
 </pre>
+
 2. Check if K3s VM listens on port 6443
+```bash
 ss -tulpan | grep 6443
+```
+<pre>
 tcp   LISTEN    0      4096                       *:6443                      *:*
+</pre>
 
 3. Copy .kube/config to your local machine, update the IP address in config to the one from point 1.
 
