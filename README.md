@@ -1,22 +1,18 @@
 # Simple Kubernetes demo
 
-## Environment preparation
+## Test environment diagram
+
+![Echo test environment](assets/k8s-demo-flow2.png)
+
+## Test environment preparation
 
 Option 1:
-- O'Reilly K8s Sandbox
+- [O'Reilly Sandbox](https://www.oreilly.com/)
 
 Option 2:
-- Single VM K3s installation
+- [Self-hosted Single VM K3s cluster](01_k3s-installation/README.md)
 
 ## Simple 'echo' application
-
-### Test environment diagram
-
-![Echo test environment](assets/echo-test-environment.svg)
-
-This diagram shows the `echo` namespace in Kubernetes with:
-- an `echo-service` routing to 3 `echo` application pods
-- a `db-service` routing to a single database pod
 
 ## Self healing
 
