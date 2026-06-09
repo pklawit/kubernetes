@@ -6,7 +6,7 @@ git clone https://github.com/pklawit/kubernetes.git
 ```
 ## Go to the 02_echo-application folder:
 ```bash
-cd kubernetes/02_echo-appliation/
+cd kubernetes/02_echo-application/
 ```
 
 ## Deployment
