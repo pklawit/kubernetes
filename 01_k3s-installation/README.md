@@ -54,6 +54,11 @@ chmod 600 $HOME/.kube/config
 ```bash
 export KUBECONFIG=$HOME/.kube/config
 ```
+To save it permanently:
+```bash
+echo 'export KUBECONFIG=$HOME/.kube/config' >> ~/.bashrc &&
+source ~/.bashrc
+```
 
 6. Testing
 ```bash
