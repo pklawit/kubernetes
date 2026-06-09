@@ -55,20 +55,14 @@ spec:
     command: ["/bin/sh", "-c"]
     # Loop listening on port 8080.
     # Receives a message, sends it to the database service (db-service) and simultaneously responds to the client.
-    args: 
+    args:
     - |
-      apk add --no-cache netcat-openbsd
+      apk add --no-cache nmap-ncat
       echo "Echo server started..."
-      while true; do
-        # Receive message from client
-        MSG=$(nc -l -p 8080)
-        if [ ! -z "$MSG" ]; then
-          # Send copy to database service in background
-          echo "Log: $MSG" | nc db-service 5432
-          # Respond to client
-          echo "ECHO: $MSG"
-        fi
-      done
+      ncat -lk -p 8080 -c "while read msg; do \
+        echo \"\$msg\" | nc -w 2 db-service 5432 >/dev/null 2>&1 & \
+        echo \"Received: '\$msg'\"; \
+      done"
     ports:
     - containerPort: 8080
 
