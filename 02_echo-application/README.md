@@ -1,5 +1,14 @@
 # Demo - Echo responder application and database for conversation history
 
+## Clone this repository to the VM:
+```bash
+git clone https://github.com/pklawit/kubernetes.git
+```
+## Go to the 02_echo-application folder:
+```bash
+cd kubernetes/02_echo-appliation/
+```
+
 ## Deployment
 Install all the components with command:
 ```bash
