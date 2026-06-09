@@ -26,7 +26,7 @@ sudo curl -sfL https://get.k3s.io | sh -
 
 4. Test as root user:
 ```bash
-kubectl get node
+sudo kubectl get node
 ```
 
 ## Virtual Machine - prepare config for non-root user
@@ -67,7 +67,7 @@ sudo apt install -y bash-completion
 sudo echo 'source <(kubectl completion bash)' >> ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc
 echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
-source ~/.bashrc</pre>
+source ~/.bashrc
 ```
 
 8. (Optional) Autocompletion testing
