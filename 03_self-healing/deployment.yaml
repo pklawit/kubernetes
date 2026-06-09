@@ -7,7 +7,7 @@ metadata:
     app: echo-app
 spec:
   # Define number of working PODs for this application
-  replicas: 1
+  replicas: 3
   # Selector says which PODs this deployment should manage
   selector:
     matchLabels:
@@ -18,21 +18,25 @@ spec:
       labels:
         app: echo-app
     spec:
+      terminationGracePeriodSeconds: 2
       containers:
       - name: echo-app
         image: alpine
+        env:
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         command: ["/bin/sh", "-c"]
         args:
         - |
-          apk add --no-cache netcat-openbsd
-          echo "Echo server started from Deployment..."
-          while true; do
-            MSG=$(nc -l -p 8080)
-            if [ ! -z "$MSG" ]; then
-              echo "Log: $MSG" | nc db-service 5432
-              echo "ECHO: $MSG"
-            fi
-          done
+          apk add --no-cache nmap-ncat
+          echo "Echo server started..."
+          ncat -lk -p 8080 -c "while read msg; do \
+            echo \"\$msg\" | nc -w 2 db-service 5432 >/dev/null 2>&1 & \
+            ts=\$(date '+%Y-%m-%d %H:%M:%S'); \
+            echo \"Received: '\$msg' [Pod IP: \$MY_POD_IP] [Time: \$ts]\"; \
+          done"
         ports:
         - containerPort: 8080
 
