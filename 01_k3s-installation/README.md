@@ -62,11 +62,11 @@ kubectl get node
 
 7. (Optional) - command autocompletion
 ```bash
-sudo apt update
-sudo apt install -y bash-completion
-sudo echo 'source <(kubectl completion bash)' >> ~/.bashrc
-echo 'alias k=kubectl' >> ~/.bashrc
-echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
+sudo apt update &&
+sudo apt install -y bash-completion &&
+sudo echo 'source <(kubectl completion bash)' >> ~/.bashrc &&
+echo 'alias k=kubectl' >> ~/.bashrc &&
+echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc &&
 source ~/.bashrc
 ```
 
