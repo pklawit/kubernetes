@@ -10,6 +10,7 @@ Network: create at least Host network, so
 ## Virtual Machine - install K3s and necessary tools
 1. Install docker.io:
 ```bash
+sudo apt update
 sudo apt install docker.io
 ```
 
