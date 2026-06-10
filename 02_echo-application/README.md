@@ -34,13 +34,10 @@ In another terminal window go inside the client POD:
 ```bash
 kubectl exec -it -n echo client-pod -- /bin/sh
 ```
-You are now inside the client POD. Let's sent some text message over TCP with netcat to the echo-service.
-First let's establish TCP session with echo-pod through the echo-service FQDN and port 8080:
+You are now inside the client POD. Let's sent some text message over TCP with netcat to the echo-service:
 ```bash
-nc echo-service 8080
+nc -N echo-service 8080 `echo Hi, this is message from client POD!`
 ```
-Then you can start sending messages like this:
-<pre>Hi, this is message from client POD!</pre>
 
 Expected result:
 You should immediately see response from the Echo service PDO:
