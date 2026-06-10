@@ -9,12 +9,12 @@ Let's check if the Echo application POD can still talk to the DB POD.
 Enter the client POD and send sample message to Echo service:
 ```bash
 kubectl exec -it -n echo client-pod -- /bin/sh
-# and then inside the POD:
-echo "Message before NP" | nc echo-service 8080
-exit
 ```
-Then check the log of database POD - there should be entry:
-<pre>Log: Message before NP</pre>
+# and then inside the POD:
+```ash
+echo "Message before first NetworkPolicy" | nc -N echo-service 8080
+```
+Then check the log of database POD - the message should be visible there
 
 ## Applying 'deny-all' NetworkPolicy
 Let's apply the NetworkPolicy, which will block all traffic incoming to database POD:
