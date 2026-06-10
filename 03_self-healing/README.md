@@ -32,18 +32,14 @@ kubectl apply -f deployment.yaml
 kubectl get pod -n echo
 ```
 
-3. Test the echo service from client POD.
-<br>
-Break the command 'nc echo-service 8080' if it's still active on the client POD, and execute it again:
-
+3. Test the echo service from client POD. Break the command 'nc echo-service 8080' if it's still active on the client POD, and execute it again:
 ```bash
 nc echo-service 8080
 ```
-Start typing something to see, that the echo application is again working and responding.
-Break of the command is necessary, as the TCP session established previously (before deployment) has been lost once we have deleted the echo-pod. TCP session needs to be established again.
+  Start typing something to see, that the echo application is again working and responding.
+  Break of the command is necessary, as the TCP session established previously (before deployment) has been lost once we have deleted the echo-pod. TCP session needs to be established again.
 
-
-5. Delete the echo service POD
+4. Delete the echo service POD
 ```bash
 kubectl delete pod -n echo ......
 ```
