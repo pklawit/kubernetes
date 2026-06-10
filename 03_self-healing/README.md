@@ -32,7 +32,8 @@ kubectl apply -f deployment.yaml
 kubectl get pod -n echo
 ```
 
-3. Test the echo service from client POD
+3. Test the echo service from client POD.
+<br>
 Break the command 'nc echo-service 8080' if it's still active on the client POD, and execute it again:
 ```bash
 nc echo-service 8080
