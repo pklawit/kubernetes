@@ -12,7 +12,7 @@ cd kubernetes/02_echo-application/
 ## Deployment
 Install all the components with command:
 ```bash
-kubectl apply -f deploy_all.yaml
+kubectl apply -f install_all.yaml
 ```
 
 Wait a minute untill all PODs will have status 'Running':
