@@ -13,7 +13,20 @@ Send couple messages from client-pod and check:
 
 ```bash
 echo "Message 1" | nc -N echo-service 8080
+```
+```bash
 echo "Message 2" | nc -N echo-service 8080
+```
+```bash
 echo "Message 3" | nc -N echo-service 8080
+```
+```bash
+echo "Message 4" | nc -N echo-service 8080
+```
+```bash
+echo "Message 5" | nc -N echo-service 8080
+```
+```bash
+echo "Message 6" | nc -N echo-service 8080
 ```
 
