@@ -19,7 +19,7 @@ kubectl delete pod -n echo echo-pod
 ```bash
 kubectl get pod -n echo
 ```
-You may see, that the application POD has disappeared, and our echo service is no longer working
+You may see, that the application POD has disappeared, and our echo service is no longer working - messages sent from client-pod will not be responded and not logged to database-pod.
 
 ## Deployment example:
 1. Apply the deployment.yaml file:
@@ -32,12 +32,11 @@ kubectl apply -f deployment.yaml
 kubectl get pod -n echo
 ```
 
-3. Test the echo service from client POD. Break the command 'nc echo-service 8080' if it's still active on the client POD, and execute it again:
+3. Test the echo service from client POD:
 ```bash
-nc echo-service 8080
+echo "Testing with deployment" | nc -N echo-service 8080
 ```
-  Start typing something to see, that the echo application is again working and responding.
-  Break of the command is necessary, as the TCP session established previously (before deployment) has been lost once we have deleted the echo-pod. TCP session needs to be established again.
+  You will see, that echo application is working again
 
 4. Delete the echo service POD
 ```bash
