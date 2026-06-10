@@ -12,7 +12,7 @@ kubectl get pod -n echo
 
 2. Delete the old application POD:
 ```bash
-kubectl delete pod -n echo ....
+kubectl delete pod -n echo echo-pod
 ```
 
 3. Check what happened on the cluster:
