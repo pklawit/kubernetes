@@ -33,8 +33,8 @@ spec:
           apk add --no-cache nmap-ncat
           echo "Echo server started..."
           ncat -lk -p 8080 -c "while read msg; do \
-            echo \"\$msg\" | nc -w 2 db-service 5432 >/dev/null 2>&1 & \
             ts=\$(date '+%Y-%m-%d %H:%M:%S'); \
+            echo \"Log: [Pod IP: \$MY_POD_IP] [Time: \$ts]: \$msg\" | nc -w 2 db-service 5432 >/dev/null 2>&1 & \
             echo \"Received: '\$msg' [Pod IP: \$MY_POD_IP] [Time: \$ts]\"; \
           done"
         ports:
