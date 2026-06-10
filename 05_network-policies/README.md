@@ -27,10 +27,10 @@ Go back to the client POD and send next message to Echo application POD:
 ```bash
 kubectl exec -it -n echo client-pod -- /bin/sh
 # and then inside the POD:
-echo "Message with NP blocking traffic to database POD" | nc echo-service 8080
+echo "Message with NP blocking traffic to database POD" | nc -N echo-service 8080
 ```
 What will happen?
-Command in the client POD will hang for a while - until timeout.
+Command in the client POD will hang for a while, but finally it will get response from the echo-application POD.
 Client sends the message to Echo service. This connection still works.
 The Echo POD receives the message and tries to forward it to database POD with the code:
 <pre>echo "Log: ..." | nc db-service 5432</pre>
