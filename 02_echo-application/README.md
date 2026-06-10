@@ -42,10 +42,10 @@ echo "Hi, this is message from client POD!" | nc echo-service 8080
 Expected result:
 You should immediately see response from the Echo service PDO:
 
-<pre>ECHO: Hi, this is message from client POD!</pre>
+<pre>Received: 'Hi, this is message from client POD! [Pod IP:10.42.0.30] [Time:2026-06-10 04:47:21]</pre>
 
 3. Verify if the conversation is stored on the database POD
 Go back to the terminal window where the DB log is printed out.
 You should see the conversation sent from client POD stored there:
-<pre>Log: Hi, this is message from client POD!</pre>
+<pre>Hi, this is message from client POD!</pre>
 
