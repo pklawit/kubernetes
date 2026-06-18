@@ -40,7 +40,7 @@ echo "Testing with deployment" | nc -N echo-service 8080
 
 4. Delete the echo service POD
 ```bash
-kubectl delete pod -n echo ......
+kubectl delete pod -n echo echo-deployment-...
 ```
 
 5. Check what has happened to the POD and check if the echo application is still working
