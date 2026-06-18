@@ -12,6 +12,9 @@ Option 1:
 Option 2:
 - [Self-hosted Single VM K3s cluster](01_k3s-installation/README.md)
 
+Option 3:
+- [Free Ubuntu VM Sandbox](https://killercoda.com/playgrounds/scenario/ubuntu) + VM configuration like in Option 2
+
 ## Simple 'echo' application
 [Multi-POD application](02_echo-application/README.md)
 
